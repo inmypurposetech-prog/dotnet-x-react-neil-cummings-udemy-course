@@ -5,6 +5,7 @@ namespace Persistence;
 
 public class DbInitializer
 {
+    // to get data from database we would usually make it asynchronous
     public static async Task SeedData(AppDbContext context)
     {
         if (context.Activities.Any()) return;
