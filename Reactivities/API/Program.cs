@@ -1,3 +1,5 @@
+using Application.Activities.Queries;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -15,10 +17,20 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // CORS related service
 builder.Services.AddCors();
 
+// adding mediatr as a service
+builder.Services.AddMediatR(config => 
+    config.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+
+// automapper configuration
+builder.Services.AddAutoMapper(config => 
+{
+    config.AddProfile<MappingProfiles>();
+});
+
 var app = builder.Build();
 
 // Middleware for CORS
-app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "https://localhost;3000"));
+app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 // Configure the HTTP request pipeline.
 app.MapControllers();
